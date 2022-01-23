@@ -10,29 +10,34 @@ Also calculates the average monthly overall cost.
 """
 
 class SpecialIndexWarning(UserWarning):
-    OutofRangeWarning = 'Out of Range --pls make sure all values are listed in appropriate columns. Calculating average for first 12 values only.'
+        OutofRangeWarning = 'Out of Range --pls make sure all values are listed in appropriate columns. Calculating average for first 12 values only.'
 
 def main():
+    sys.tracebacklimit = 0
 
-    if len(sys.argv) > 1:
-       try:
+    if len(sys.argv) == 2:
+        try:
            fp = open(sys.argv[1],'r')
-       except FileNotFoundError as err:
-           print('Incorrect file or path.',err)
+        except FileNotFoundError as err:
+            print('Incorrect file or path. Please try again!',err)
+            print('Usage: python3 expenses.py <filepath>')
     else:
-        print('Usage: python3 expenses.py <filepath>')
-    try:
+        raise UnboundLocalError('Need to input one file as input param')
+        print('unbound',err)
+        print('Please enter filename.  Usage: python3 expenses.py <filepath>')
 
+    #    try:
+   #         pass
+  #      except UnboundLocalError as err:
+ #           print('unbound',err)
+#            print('Please enter filename.  Usage: python3 expenses.py <filepath>')
+    try:
         data = csv.reader(fp, delimiter=',')
     except csv.Error as e:
         sys.exit('Please use properly formatted csv!  file {}, line {}: {}'.format(filename, reader.line_num, e))
 
     if not data:
         raise ValueError('No data available')
-
-
-    next(data)
-    #skip header row from parser
     aveSum=0
     for row in data:
         try:
@@ -49,9 +54,7 @@ def main():
             print('average monthly cost for {0} is ${1:.2f}'.format(category,ave))
             #exception handling if string entered instead of int/float in any field
         except ValueError as err: # process ValueError only
-                if (category[:2] =='//' or category[:2]=='/*'):
-                    print("Ignoring comment")
-                    print(category[:2])
+                if (category[:2] =='//' or category[:2]=='/*' or category=='expense'): #ignore header row and comment rows
                     del row
                 else:
                     print('Please make sure values contain numbers only and no symbols nor characters. This row is skipped: Row:{}; Reason :{}'.format(category, err) )
