@@ -3,4 +3,4 @@ Given a csv file with similar format as budget.csv in this repo containing month
 
 2 sample csv files are provided. Program requires user to enter filepath/name at command line--see usage below.
 
-Usage: python3 expenses.py <filename>
+Usage: python3 expenses.py < filename >
